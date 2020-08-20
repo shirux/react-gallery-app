@@ -10,7 +10,14 @@ within a course training in [Team-Treehouse](https://teamtreehouse.com)
 Create a **config.js file** from the **config.js.example file** and replace the flickr key value. 
 This new file **must** be in the same folder as the example file and must respect its structure.
 
-Once created run the next command to start the app
+Once created run the following commands: to start the app
+
+- To install dependencies:
+```
+npm install
+```
+
+- To start the app in local:
 ```
 npm start
 ```

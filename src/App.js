@@ -69,7 +69,7 @@ class App extends Component{
    */
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename="/react-gallery-app">
         <div className="container">
           <SearchForm searchPhotos={this.fetchPhotos.bind(this)} />
           <Navbar />
