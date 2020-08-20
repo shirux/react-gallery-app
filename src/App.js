@@ -16,43 +16,70 @@ class App extends Component{
     super(props)
 
     this.state = {
-      firstLoad: true,
-      photos: []
+      search: [],
+      bikePhotos: [],
+      landscapePhotos: [],
+      forestPhotos: [],
+      isLoading: false
     }
   }
 
-  componentDidMount(){
-    this.fetchPhotos();
+
+
+  async componentDidMount() {
+    this.fetchPhotos('bicycles', 'bikePhotos');
+    this.fetchPhotos('forest', 'forestPhotos');
+    this.fetchPhotos('landscape', 'landscapePhotos');
   }
 
-  async fetchPhotos(query = 'forest'){
+  async fetchPhotos(query, property = 'search') {
+    this.setState({isLoading: true})
     try {
-      const photosJson = await axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=40&format=json&nojsoncallback=1`);
+      const photosJson = await axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`);
       if (photosJson.data) {
         const { photos } = photosJson.data;
         this.setState({
-          photos: photos.photo
-        })
+          [property]: photos.photo
+        });
       }
     } catch (error) {
-      this.setState({photos:[]})
       console.log('there has been an error fetching photos');
+    } finally {
+      this.setState({isLoading: false})
     }
   }
+
+
 
 
   render() {
     return (
       <BrowserRouter>
         <div className="container">
-          <SearchForm />
+          <SearchForm searchPhotos={this.fetchPhotos.bind(this)} />
           <Navbar />
           <Switch>
             <Route exact path="/" render={() => <Redirect to='/forest' />} />
-            <Route path="/search/:query" component={PhotoList} />
-            <Route path="/bikes" component={PhotoList} />
-            <Route path="/forest" component={PhotoList} />
-            <Route path="/landscapes" component={PhotoList} />
+            <Route path="/search/:query" render={({match}) => {
+              return(
+                <PhotoList query={this.state.query} isLoading={this.state.isLoading} data={this.state.search} match={match}/>
+              )
+            }} />
+            <Route path="/bicycles" render={({match}) => {
+              return(
+                <PhotoList query={this.state.query} isLoading={this.state.isLoading} data={this.state.bikePhotos} match={match}/>
+              )
+            }} />
+            <Route path="/forest" render={({match}) => {
+              return(
+                <PhotoList query={this.state.query} isLoading={this.state.isLoading} data={this.state.forestPhotos} match={match}/>
+              )
+            }} />
+            <Route path="/landscapes" render={({match}) => {
+              return(
+                <PhotoList query={this.state.query} isLoading={this.state.isLoading} data={this.state.landscapePhotos} match={match}/>
+              )
+            }} />
             <Route component={NotFound} />
           </Switch>
         </div>
