@@ -3,6 +3,11 @@ import { withRouter } from 'react-router';
 
 class SearchForm extends Component{
 
+    /**
+     * Push into history a new path according to value search.
+     * Also search photos according to value search.
+     * @param {Event} e 
+     */
     handleSubmit(e) {
         e.preventDefault();
         this.props.searchPhotos(this.query.value);
@@ -12,6 +17,9 @@ class SearchForm extends Component{
     }
 
 
+    /**
+     * Renders a form component with a ref
+     */
     render() {
         return(
             <form onSubmit={(e) => this.handleSubmit(e)} className="search-form">

@@ -15,6 +15,10 @@ class App extends Component{
   constructor(props){
     super(props)
 
+    /**
+     * State for App component which contains
+     * 3 arrays for nav links and 1 array for search photos
+     *  */ 
     this.state = {
       search: [],
       bikePhotos: [],
@@ -25,19 +29,28 @@ class App extends Component{
   }
 
 
-
+  /**
+   * Initialize component and fetch data to navLinks results
+   */
   async componentDidMount() {
     this.fetchPhotos('bicycles', 'bikePhotos');
     this.fetchPhotos('forest', 'forestPhotos');
     this.fetchPhotos('landscape', 'landscapePhotos');
   }
 
+  /**
+   * Fetch photos from flickr api
+   * @param {String} query search terms  
+   * @param {*} property Property where to save data results in APP state
+   */
   async fetchPhotos(query, property = 'search') {
     this.setState({isLoading: true})
     try {
+      // Await the api response and validate if it exists
       const photosJson = await axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`);
       if (photosJson.data) {
         const { photos } = photosJson.data;
+        // Set result into state passed by parameter
         this.setState({
           [property]: photos.photo
         });
@@ -45,13 +58,15 @@ class App extends Component{
     } catch (error) {
       console.log('there has been an error fetching photos');
     } finally {
+      // Always set isLoading property to false after success or error
       this.setState({isLoading: false})
     }
   }
 
-
-
-
+  /**
+   * Renders all page inside a BrowserRouter and validates each path
+   * to render components inside Route components
+   */
   render() {
     return (
       <BrowserRouter>

@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Not Found results component
+ * This is almost plain text
+ */
 const PhotoNotFound = () => {
     return(
         <li className="not-found">

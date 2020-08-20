@@ -2,6 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
+    /**
+     * Renders three different NavLink options
+     */
     return(
         <nav className="main-nav">
             <ul>

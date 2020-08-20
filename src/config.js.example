@@ -1,0 +1,2 @@
+const apiKey = 'keyExample1234567890';
+export default apiKey;
