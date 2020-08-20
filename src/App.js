@@ -80,7 +80,8 @@ class App extends Component{
                 <PhotoList query={this.state.query} isLoading={this.state.isLoading} data={this.state.landscapePhotos} match={match}/>
               )
             }} />
-            <Route component={NotFound} />
+            <Route path="/404" component={NotFound} />
+            <Route render={() => <Redirect to='/404' />} />
           </Switch>
         </div>
       </BrowserRouter>
